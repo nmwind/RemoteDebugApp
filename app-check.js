@@ -13,12 +13,12 @@
 {
     var message = "";
     var newLocation = "about:blank";
-    
+
     try {
-        
+
         // Check if is HTTPS
         if (location.protocol == 'https:') {
-            message = "*** HTTPS (SSL) not supported:\n"+ 
+            message = "*** HTTPS (SSL) not supported:\n"+
                     "RemoteDebugApp not support HTTPS yet, \n" +
                     "due a limitation on Arduino web socket server," +
                     "that not support a web socket with SSL (wss)." +
@@ -32,7 +32,7 @@
                     "And all traffic is only in local network," +
                     "none of data is exposed to internet\n\n" +
                     "Click in button to reload the app in HTTP";
-            newLocation = 'http:' + window.location.href.substring(window.location.protocol.length);    
+            newLocation = 'http:' + window.location.href.substring(window.location.protocol.length);
         }
 
         // Check browser version
@@ -44,21 +44,21 @@
             console.info("browser name: " + browser.name + " os: " + os.name + " " + os.version);
             //alert("browser name: " + browser.name + " os: " + os.name + " " + os.version);
             if (browser.name.substring(0, 2) == "IE") {
-                message = "*** Internet explorer not supported:\n" + 
+                message = "*** Internet explorer not supported:\n" +
                             "This HTML5 Web App not support Internet Explorer\n" +
                             "Please use the Edge or another modern browser, as Chrome or Firefox\n\n" +
                             "Click in button to exit";
             }
             if (os.name == "iOS" && os.version.substring(0, 3) == "10.") {
-                message = "*** iOS 10 not supported\n"+ 
+                message = "*** iOS 10 not supported\n"+
                             "This HTML5 Web App not support iOS version 10\n"+
                             // "Please use another modern browser, as Chrome or Firefox\n\n" +
-                            "Click in button to exit"; 
-            }    
+                            "Click in button to exit";
+            }
         }
     } catch (error) {
-        console.error("error on app-check");	
-        message = "An error occurs on app checking";				
+        console.error("error on app-check");
+        message = "An error occurs on app checking";
     } finally {
 
         if (message != "") {
@@ -66,8 +66,9 @@
             alert (message);
 
             // Redirect
-
-            location.replace (newLocation);
+            if (location.protocol == 'http:') {
+                location.replace(newLocation);
+            }
         }
     }
 }
